@@ -4,17 +4,20 @@
 #include "byte_stream.hh"
 
 #include <cstdint>
+#include <map>
 #include <string>
-
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
 
-    ByteStream _output;  //!< The reassembled in-order byte stream
-    size_t _capacity;    //!< The maximum number of bytes
-
+    ByteStream _output;                              //!< The reassembled in-order byte stream
+    size_t _capacity;                                //!< The maximum number of bytes
+    size_t _next_assembled_idx;                      // 下一个带装配的字节索引
+    std::map<size_t, std::string> _unassemble_strs;  // 索引，子串的map
+    size_t _eof_idx;                                 // eof 的idx
+    size_t _unassembled_byte_num;                    // 未装配的字符数
   public:
     //! \brief Construct a `StreamReassembler` that will store up to `capacity` bytes.
     //! \note This capacity limits both the bytes that have been reassembled,
