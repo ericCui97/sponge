@@ -5,7 +5,7 @@
 #include "tcp_config.hh"
 #include "tcp_segment.hh"
 #include "wrapping_integers.hh"
-
+#include<map>
 #include <functional>
 #include <queue>
 
@@ -17,6 +17,17 @@
 //! segments if the retransmission timer expires.
 class TCPSender {
   private:
+
+  int _timeout{-1};
+  int _timecount{0};
+  std::map<size_t,TCPSegment> _outgoing_map{};
+  size_t _outgoing_bytes{0};
+  size_t _last_window_size{1};
+  // 是否已经发送syn
+  bool _set_syn_flag{false};
+  // 是否已经发送fin
+  bool _set_fin_flag{false};
+  size_t _consecutive_retransmissions_count{0};
     //! our initial sequence number, the number for our SYN.
     WrappingInt32 _isn;
 
